@@ -2,6 +2,7 @@
 
 from lxml import etree
 import requests
+import re
 
 user_agent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0'
 headers = {'User-Agent':user_agent}
@@ -19,4 +20,10 @@ for div_mulu in div_mulus:
         for a in a_s:
             href = a.xpath('./@href')[0]
             box_title = a.xpath('./@title')[0]
-            print(box_title, href)
+
+            pattern = re.compile(r'\s*\[(.*)\]\s+(.*)')
+            match = pattern.search(box_title)
+            if match != None:
+                data = match.group(1)
+                real_title = match.group(2)
+                print(real_title, href)
